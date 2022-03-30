@@ -28,14 +28,28 @@ router.get("/all", async (req, res) => {
   }
 });
 
-router.get("/byId", (req, res) => {
-  console.log(`Método get, retornar apenas os dados requisitados pelo Id`);
-  res.send("Retornar dados requisitados.");
+router.get("/byId/:id", async (req, res) => {
+  try {
+    const data = await Model.findById(req.params.id);
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
-router.patch("/updateById/:id", (req, res) => {
-  console.log(`Método patch, atualizar os dados pelo Id`);
-  res.send("Atualizar dados pelo Id.");
+router.patch("/updateById/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const newData = req.body;
+
+    //To return the modified data rather than the original data.
+    const options = { new: true };
+
+    const result = await Model.findByIdAndUpdate(id, newData, options);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 router.delete("/deleteById/:id", (req, res) => {
