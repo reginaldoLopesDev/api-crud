@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 
 const dataScheema = mongoose.Schema({
-  name: {
+  nome: {
     type: String,
     required: true,
   },
-  age: {
+  idade: {
     type: Number,
     required: true,
   },
