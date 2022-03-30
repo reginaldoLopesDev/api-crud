@@ -4,7 +4,6 @@ const Model = require("../models/model");
 const router = express.Router();
 
 router.post("/save", async (req, res) => {
-  console.log(`Método post`);
   const nome = req.body.nome;
   const idade = req.body.idade;
 
@@ -20,9 +19,13 @@ router.post("/save", async (req, res) => {
   }
 });
 
-router.get("/all", (req, res) => {
-  console.log(`Método get, retornar todos os dados.`);
-  res.send("Retornar todos os dados.");
+router.get("/all", async (req, res) => {
+  try {
+    const data = await Model.find();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 router.get("/byId", (req, res) => {
