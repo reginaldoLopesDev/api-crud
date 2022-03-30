@@ -31,6 +31,12 @@ router.get("/all", async (req, res) => {
 router.get("/byId/:id", async (req, res) => {
   try {
     const data = await Model.findById(req.params.id);
+
+    if (!data) {
+      res.status(422).json({ message: "Registro não encontrado." });
+      return;
+    }
+
     res.json(data);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -46,6 +52,12 @@ router.patch("/updateById/:id", async (req, res) => {
     const options = { new: true };
 
     const result = await Model.findByIdAndUpdate(id, newData, options);
+
+    if (!result) {
+      res.status(422).json({ message: "Registro não encontrado." });
+      return;
+    }
+
     res.json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -57,6 +69,12 @@ router.delete("/deleteById/:id", async (req, res) => {
     const id = req.params.id;
 
     const data = await Model.findByIdAndDelete(id);
+
+    if (!data) {
+      res.status(422).json({ message: "Registro não encontrado." });
+      return;
+    }
+
     res.send(`O registro com o nome ${data.nome} foi deletado.`);
   } catch (error) {
     res.status(400).json({ message: error.message });
