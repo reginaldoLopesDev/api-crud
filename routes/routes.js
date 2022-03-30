@@ -52,9 +52,15 @@ router.patch("/updateById/:id", async (req, res) => {
   }
 });
 
-router.delete("/deleteById/:id", (req, res) => {
-  console.log(`Método delete, deletar os dados pelo Id.`);
-  res.send("Deletar dados pelo Id.");
+router.delete("/deleteById/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const data = await Model.findByIdAndDelete(id);
+    res.send(`O registro com o nome ${data.nome} foi deletado.`);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
 });
 
 module.exports = router;
