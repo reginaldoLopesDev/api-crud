@@ -1,21 +1,21 @@
 require("dotenv").config();
 
 const express = require("express");
+const routes = require("./routes/routes");
+
 const mongoose = require("mongoose");
 const mongoString = process.env.DATABASE_URL;
-
-const routes = require("./routes/routes");
 
 mongoose.connect(mongoString);
 const database = mongoose.connection;
 
 database.on("error", (error) => {
-  console.log(`An error has ocurred: ${error.message}\n`);
+  console.log(`Um erro ocorreu: ${error.message}\n`);
   console.log(error);
 });
 
 database.once("connected", () => {
-  console.log("Database Connected");
+  console.log("Banco de dados conectado.");
 });
 
 const app = express();
