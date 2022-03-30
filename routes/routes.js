@@ -1,10 +1,23 @@
 const express = require("express");
 
+const Model = require("../models/model");
 const router = express.Router();
 
-router.post("/save", (req, res) => {
+router.post("/save", async (req, res) => {
   console.log(`Método post`);
-  res.send("Salvar dados.");
+  const nome = req.body.nome;
+  const idade = req.body.idade;
+
+  const data = new Model({
+    nome: nome,
+    idade: idade,
+  });
+  try {
+    const dataSaved = await data.save();
+    res.status(200).json(dataSaved);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
 });
 
 router.get("/all", (req, res) => {
